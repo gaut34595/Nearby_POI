@@ -1,5 +1,7 @@
 package com.example.nearby_poi;
 
+import com.example.nearby_poi.Model.PlacesModel;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 

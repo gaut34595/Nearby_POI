@@ -1,5 +1,6 @@
 package com.example.nearby_poi.NetworkRequest;
 
+import com.example.nearby_poi.Model.DirectionResponseModel;
 import com.example.nearby_poi.Model.GoogleApiResponseModel;
 
 import retrofit2.Call;
@@ -10,4 +11,7 @@ public interface RetrofitAPI {
 
     @GET
     Call<GoogleApiResponseModel> getNearByPlace(@Url String url);
+
+    @GET
+    Call<DirectionResponseModel> getDirection(@Url String url);
 }

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+<data>
+    <variable
+        name="googleModel"
+        type="com.example.nearby_poi.Model.GoogleModel"/>
+
+
+</data>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginHorizontal="10dp"
+    app:cardCornerRadius="15dp"
+    android:layout_marginVertical="5dp"
+    app:cardElevation="8dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <ImageView
+            loadImage="@{googleModel.icon}"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="0.5"
+            android:scaleType="centerCrop"
+            android:src="@color/quantum_grey700"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5"
+            android:orientation="vertical"
+            android:padding="10dp">
+            <RelativeLayout
+                android:id="@+id/rating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtrating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{googleModel.rating!=null?String.valueOf(googleModel.rating):`New`,default =4.1}"
+                    android:textSize="16dp"
+                    android:textColor="@color/black"
+                    app:drawableStartCompat="@drawable/baseline_star_half_24"
+                    android:drawableTint="@color/blue"
+                    android:textStyle="bold"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/txtrating"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="2dp"
+                    android:textSize="16dp"
+                    android:text="@{googleModel.userRatingsTotal!=null?`(`+ String.valueOf(googleModel.userRatingsTotal)+`)`:``,default=`(121)`}"
+                    android:textColor="@color/black"/>
+
+                <ImageView
+                    android:id="@+id/direcbtn"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/baseline_directions_24"
+                    app:tint="#388E3C" />
+
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/placeName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{googleModel.name!=null?googleModel.name:`No Name`,default = `Place Name`}"
+                android:textSize="17dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/placeAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{googleModel.vicinity!=null?googleModel.vicinity:`No Address Found`,default = `Address`}"
+                android:textSize="17dp"
+                android:textColor="@color/quantum_grey800"
+                />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.cardview.widget.CardView>
+
+</layout>

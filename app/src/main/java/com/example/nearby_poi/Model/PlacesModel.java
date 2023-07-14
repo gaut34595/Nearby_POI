@@ -1,4 +1,4 @@
-package com.example.nearby_poi;
+package com.example.nearby_poi.Model;
 
 public class PlacesModel {
     int id,drawableId;

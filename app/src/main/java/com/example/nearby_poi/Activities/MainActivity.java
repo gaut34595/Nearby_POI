@@ -1,8 +1,10 @@
-package com.example.nearby_poi;
+package com.example.nearby_poi.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.nearby_poi.R;
 
 public class MainActivity extends AppCompatActivity {
 

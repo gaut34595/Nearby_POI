@@ -2,6 +2,7 @@ package com.example.nearby_poi.Fragments;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -18,23 +19,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.nearby_poi.Activities.DirectionActivity;
 import com.example.nearby_poi.Constants;
 import com.example.nearby_poi.Dialog;
 import com.example.nearby_poi.Model.GoogleApiResponseModel;
 import com.example.nearby_poi.Model.GoogleModel;
 import com.example.nearby_poi.NetworkRequest.RetrofitAPI;
 import com.example.nearby_poi.NetworkRequest.RetrofitClient;
-import com.example.nearby_poi.PlacesModel;
+import com.example.nearby_poi.Model.PlacesModel;
 import com.example.nearby_poi.R;
 import com.example.nearby_poi.databinding.FragmentHomeBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -235,6 +235,20 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         map.addMarker(markerOptions1);
 
     }
+
+    public void onDirectionClick(GoogleModel googleModel) {
+        String placeId = googleModel.getPlaceId();
+        Double lat = googleModel.getGeometry().getLocation().getLat();
+        Double lng = googleModel.getGeometry().getLocation().getLng();
+
+        Intent i = new Intent(requireContext(), DirectionActivity.class);
+        i.putExtra("placeID",placeId);
+        i.putExtra("latitude",lat);
+        i.putExtra("longitude",lng);
+
+        startActivity(i);
+    }
+
 
 
 }
