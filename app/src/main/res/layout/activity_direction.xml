@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/bottom_sheet_behavior"
+    tools:context=".DirectionActivity">
+
+
+        <fragment
+            android:id="@+id/map_direction"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:name="com.google.android.gms.maps.SupportMapFragment"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/traffic_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="15dp"
+        android:src="@drawable/baseline_traffic_24"
+        app:fabCustomSize="50dp"
+        android:backgroundTint="#388E3C"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            app:cardCornerRadius="12dp"
+            app:layout_behaviour="@string/appbar_scrolling_view_behaviour">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="20dp">
+                <ImageView
+                    android:id="@+id/imgorigin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/baseline_location_on_24"
+                    app:tint="@color/black"/>
+                <TextView
+                    android:id="@+id/originlable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:text="Start"
+                    android:layout_toEndOf="@id/imgorigin"
+                    android:textColor="#2B2828"
+                    style="bold"/>
+                <TextView
+                    android:id="@+id/originloc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/originlable"
+                    android:layout_alignStart="@+id/originlable"
+                    android:ellipsize="end"
+                    android:layout_marginTop="5dp"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:text="Origin"/>
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/originloc"
+                    android:layout_alignStart="@id/originloc"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="#902E2B2B"/>
+                <ImageView
+                    android:id="@+id/imgdest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/view"
+                    android:src="@drawable/baseline_location_on_24"
+                    app:tint="@color/black"/>
+                <TextView
+                    android:id="@+id/destlable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:text="Destination"
+                    android:layout_below="@+id/view"
+                    android:layout_toEndOf="@id/imgdest"
+                    android:textColor="#2B2828"
+                    style="bold" />
+                <TextView
+                    android:id="@+id/destloc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/destlable"
+                    android:layout_alignStart="@+id/destlable"
+                    android:ellipsize="end"
+                    android:layout_marginTop="5dp"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:text="End"/>
+            </RelativeLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="12dp">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/travelModes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_gravity="center"
+                app:selectionRequired="true"
+                app:singleLine="true"
+                app:singleSelection="true"
+                app:checkedChip="@+id/btnDriving">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/btnDriving"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:text="Driving"
+                    android:checkable="true"
+                    android:textColor="@color/black"
+                    app:checkedIconEnabled="true"
+                    app:chipBackgroundColor="@color/blue"/>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/btnWalking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:text="Walking"
+                    android:checkable="true"
+                    android:textColor="@color/black"
+                    app:chipBackgroundColor="@color/blue"/>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/btnbike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:text="Bike"
+                    android:checkable="true"
+                    android:textColor="@color/black"
+                    app:chipBackgroundColor="@color/blue"/>
+
+
+            </com.google.android.material.chip.ChipGroup>
+
+        </HorizontalScrollView>
+
+
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
