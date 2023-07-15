@@ -1,5 +1,6 @@
 package com.example.nearby_poi.Model;
 
+import com.example.nearby_poi.GoogleModel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

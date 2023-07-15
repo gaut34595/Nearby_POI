@@ -12,6 +12,10 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,10 +24,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.nearby_poi.Activities.DirectionActivity;
+import com.example.nearby_poi.Adapters.PlaceAdapter;
 import com.example.nearby_poi.Constants;
 import com.example.nearby_poi.Dialog;
 import com.example.nearby_poi.Model.GoogleApiResponseModel;
-import com.example.nearby_poi.Model.GoogleModel;
+import com.example.nearby_poi.GoogleModel;
 import com.example.nearby_poi.NetworkRequest.RetrofitAPI;
 import com.example.nearby_poi.NetworkRequest.RetrofitClient;
 import com.example.nearby_poi.Model.PlacesModel;
@@ -37,6 +42,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -56,7 +62,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeFragment extends Fragment implements OnMapReadyCallback {
+public class HomeFragment extends Fragment implements OnMapReadyCallback,GoogleMap.OnMarkerClickListener {
     FragmentHomeBinding binding;
     private GoogleMap map;
     int radius = 1500;
@@ -68,6 +74,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private RetrofitAPI retrofitAPI;
 
     private PlacesModel selectedPmodel;
+
+    private PlaceAdapter placeAdapter;
     private List<GoogleModel> googleModelList;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -115,6 +123,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             binding.chipGroup.addView(chip);
         }
 
+        setRecyclerView();
+
     }
 
     @Override
@@ -154,6 +164,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         }
         map.setMyLocationEnabled(true);
         map.getUiSettings().setTiltGesturesEnabled(true);
+        map.setOnMarkerClickListener(this::onMarkerClick);
         Task<Location> task = client.getLastLocation();
 
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
@@ -176,8 +187,32 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
+    private void setRecyclerView(){
 
+        binding.placesRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false));
+        binding.placesRecyclerView.setHasFixedSize(false);
+        placeAdapter = new PlaceAdapter();
+        binding.placesRecyclerView.setAdapter(placeAdapter);
 
+        SnapHelper snapHelper = new PagerSnapHelper();
+
+        snapHelper.attachToRecyclerView(binding.placesRecyclerView);
+        binding.placesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+
+                int position = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
+                if(position>-1){
+                    GoogleModel googleModel = googleModelList.get(position);
+                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(googleModel.getGeometry().getLocation().getLat(),googleModel.getGeometry().getLocation().getLng()),20));
+
+                }
+            }
+        });
+
+    }
     private void getPlaces(String placeName){
         Log.d(">>>>>>>>insidegetplaces","1234");
         String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+ latLng.latitude
@@ -199,9 +234,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                                googleModelList.add(response.body().getGoogleModelList().get(i));
                                addMarkers(response.body().getGoogleModelList().get(i),i);
                            }
+
+                           placeAdapter.setGoogleModelList(googleModelList);
                        }else{
                            map.clear();
                            googleModelList.clear();
+                           placeAdapter.setGoogleModelList(googleModelList);
                            radius+=1000;
                            getPlaces(placeName);
                        }
@@ -250,5 +288,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-
+    @Override
+    public boolean onMarkerClick(@NonNull Marker marker) {
+        int tag = (int) marker.getTag();
+        binding.placesRecyclerView.scrollToPosition(tag);
+        return false;
+    }
 }

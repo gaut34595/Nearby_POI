@@ -1,18 +1,16 @@
 package com.example.nearby_poi.Adapters;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.nearby_poi.Model.GoogleModel;
+import com.example.nearby_poi.GoogleModel;
 import com.example.nearby_poi.R;
 import com.example.nearby_poi.databinding.PlaceHolderItemLayoutBinding;
 
-import java.util.Date;
 import java.util.List;
 
 public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> {

@@ -1,7 +1,9 @@
-package com.example.nearby_poi.Model;
+package com.example.nearby_poi;
 
 import android.provider.Contacts;
 
+import com.example.nearby_poi.Model.GeometryModel;
+import com.example.nearby_poi.Model.PhotoModel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.google.maps.android.data.Geometry;
