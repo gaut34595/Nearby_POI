@@ -7,41 +7,44 @@ This app allows you to discover nearby points of interest based on your location
 
 Demo Video of the application 
 
-https://github.com/gaut34595/Nearby_POI/assets/76027634/489c1ab0-86b3-4acf-b8f9-64091f6fc41f
+
+https://github.com/gaut34595/Nearby_POI/assets/76027634/0db6d9f4-06b4-43c3-b79d-ee4150fb8b42
+
+
 
 ## Features
 
-Display's current location of user on Google Map.
+Display's current location of the user on Google Maps.
 
-Can Fetch nearby point of Interest based on user location in a predefined search radius.
+Can Fetch nearby points of Interest based on user location in a predefined search radius.
 
 Display POI as Markers.
 
-Bottom sheet to show more information about the place like address, full name, rating.
+The bottom sheet shows more information about the place like address, full name, and rating.
 
-Dialog on map to show the distance when clicked on marker.
+Dialog on the map to show the distance when clicked on marker.
 
 Show directions to a selected point using Google Maps API.
 
 
 ## Installation
-To use this application you need to change the API key inside the String.xml file .
+To use this application you need to change the API key inside the String.xml file.
 
 Make sure you must use a new API Key and enable it for using Android Maps SDK.
 
 
 ## Usage/Examples
 
-This application provides user the facility to locate and find the nearby points of interest and also tells about the time and distance from the user location.
+This application provides users the facility to locate and find nearby points of interest and also tells about the time and distance from the user's location.
 
-Also this application provides you the path to reach at that point from your location in three different modes. Ex- bike,driving,walking.
+Also, this application provides you the path to reach that point from your location in three different modes. Ex- bike, driving, walking.
 
 
 ## Architecture
 
 MVVM Architecture is used to create this application.
 
-Google Map SDK, Places & Direction API's
+Google Map SDK, Places & Direction APIs
 
 Navigation Component
 
@@ -49,7 +52,7 @@ Data Binding
 
 Android (Java).
 
-User Experience is kept at priority.
+User Experience is kept as a priority.
 
 Different POJO classes/Model Classes are made to streamline data.
 
