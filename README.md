@@ -56,7 +56,7 @@ Different POJO classes/Model Classes are made to streamline data.
 ## for Google maps
 
 ```java
-# for google Maps
+# for Google Maps
 
 implementation 'com.google.android.gms:play-services-maps:18.1.0'
 
@@ -84,3 +84,7 @@ implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
     
 implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
 ```
+## Screen Shots
+![WhatsApp Image 2023-07-15 at 9 44 51 PM (2)](https://github.com/gaut34595/Nearby_POI/assets/76027634/fdc74456-f6fd-4cd7-a55e-2fc7ff667931)
+![WhatsApp Image 2023-07-15 at 9 44 51 PM](https://github.com/gaut34595/Nearby_POI/assets/76027634/f9d080fb-f807-49dc-b7c1-b9700e43bed9)
+![WhatsApp Image 2023-07-15 at 9 44 51 PM (1)](https://github.com/gaut34595/Nearby_POI/assets/76027634/e6a3013b-149e-43f9-8baf-404648847ca9)
