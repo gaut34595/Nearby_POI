@@ -3,7 +3,11 @@
 
 This app allows you to discover nearby points of interest based on your location, providing you the additional details about the location using Google Maps API with the directions to that location from your current location.
 
+## Demo Video
 
+Demo Video of the application 
+
+https://github.com/gaut34595/Nearby_POI/assets/76027634/489c1ab0-86b3-4acf-b8f9-64091f6fc41f
 
 ## Features
 
@@ -89,8 +93,5 @@ implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
 ![WhatsApp Image 2023-07-15 at 9 44 51 PM](https://github.com/gaut34595/Nearby_POI/assets/76027634/f9d080fb-f807-49dc-b7c1-b9700e43bed9)
 ![WhatsApp Image 2023-07-15 at 9 44 51 PM (1)](https://github.com/gaut34595/Nearby_POI/assets/76027634/e6a3013b-149e-43f9-8baf-404648847ca9)
 
-##Demo Video
 
-Demo Video of the application 
-https://github.com/gaut34595/Nearby_POI/assets/76027634/489c1ab0-86b3-4acf-b8f9-64091f6fc41f
 
