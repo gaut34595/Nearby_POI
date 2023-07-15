@@ -14,6 +14,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.nearby_poi.Adapters.AdapterV;
@@ -36,6 +37,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Dash;
 import com.google.android.gms.maps.model.Dot;
 import com.google.android.gms.maps.model.Gap;
+import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -77,6 +79,7 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
     private FusedLocationProviderClient client;
 
     private AdapterV adapter;
+    LatLng ll;
 
 
     @Override
@@ -87,10 +90,12 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
 
         endLat = getIntent().getDoubleExtra("latitude", 0.0);
         endLng = getIntent().getDoubleExtra("longitude", 0.0);
+        Log.d(">>>>>endlatlng",endLat.toString()+ ","+endLng.toString());
+
+        ll = new LatLng(endLat,endLng);
         placeID = getIntent().getStringExtra("placeID");
 
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+       getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         dialog = new Dialog(this);
         retrofitAPI = RetrofitClient.getRetrofit().create(RetrofitAPI.class);
@@ -98,7 +103,7 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
         bottomSheetBehavior = BottomSheetBehavior.from(bottomBannerLayoutBinding.getRoot());
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
-        adapter= new AdapterV();
+        adapter = new AdapterV();
 
         bottomBannerLayoutBinding.stepRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         bottomBannerLayoutBinding.stepRecyclerView.setAdapter(adapter);
@@ -111,15 +116,15 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
         binding.trafficBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isTrafficEnabled){
-                    if(map!=null){
+                if (isTrafficEnabled) {
+                    if (map != null) {
                         map.setTrafficEnabled(false);
-                        isTrafficEnabled=false;
+                        isTrafficEnabled = false;
                     }
-                }else{
-                    if(map!=null){
+                } else {
+                    if (map != null) {
                         map.setTrafficEnabled(true);
-                        isTrafficEnabled= true;
+                        isTrafficEnabled = true;
                     }
                 }
             }
@@ -127,15 +132,15 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
         binding.travelModes.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(ChipGroup group, int checkedId) {
-                if(checkedId!=-1){
+                if (checkedId != -1) {
 
-                    if(checkedId==R.id.btnDriving){
+                    if (checkedId == R.id.btnDriving) {
                         getDirection("driving");
                     }
-                    if(checkedId==R.id.btnbike){
+                    if (checkedId == R.id.btnbike) {
                         getDirection("bike");
                     }
-                    if(checkedId==R.id.btnWalking){
+                    if (checkedId == R.id.btnWalking) {
                         getDirection("walking");
                     }
 
@@ -147,28 +152,30 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
     }
 
     private void getDirection(String mode) {
-        dialog.startLoading();
+
         String url = "https://maps.googleapis.com/maps/api/directions/json?" +
                 "origin=" + currLoc.getLatitude() + "," + currLoc.getLongitude() +
                 "&destination=" + endLat + "," + endLng +
                 "&mode=" + mode + "&key=" + getResources().getString(R.string.API_KEY);
+        Log.d(">>>>>>",url);
 
         retrofitAPI.getDirection(url).enqueue(new Callback<DirectionResponseModel>() {
             @Override
             public void onResponse(Call<DirectionResponseModel> call, Response<DirectionResponseModel> response) {
 
-                Gson gson= new Gson();
+                Gson gson = new Gson();
                 String gresponse = gson.toJson(response.body());
-                Log.d(">>>>>>","RES"+ gresponse);
+                Log.d(">>>>>>", "RES" + gresponse);
 
-                if(response.errorBody()!=null){
-                    if(response.body()!=null){
+                if (response.errorBody() == null) {
+                    if (response.body() != null) {
                         clearUI();
 
-                        if(response.body().getDirectionRouteModels().size()>0){
+                        if (response.body().getDirectionRouteModels().size() > 0) {
                             RouteDirectionModel routeDirectionModel = response.body().getDirectionRouteModels().get(0);
 
                             getSupportActionBar().setTitle(routeDirectionModel.getSummary());
+                            Log.d(">>>>>>>insideinside",routeDirectionModel.getSummary());
                             LegDirectionModel legDirectionModel = routeDirectionModel.getLegs().get(0);
                             binding.originloc.setText(legDirectionModel.getStartAddress());
                             binding.destloc.setText(legDirectionModel.getEndAddress());
@@ -177,14 +184,14 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
                             bottomBannerLayoutBinding.distancesheet.setText(legDirectionModel.getDistance().getText());
 
                             map.addMarker(new MarkerOptions()
-                                    .position(new LatLng(legDirectionModel.getStartLocation().getLat(),legDirectionModel.getStartLocation().getLng()))
+                                    .position(new LatLng(legDirectionModel.getStartLocation().getLat(), legDirectionModel.getStartLocation().getLng()))
                                     .title("Start Location"));
-
+                            Log.d(">>>>>startloc",legDirectionModel.getStartLocation().getLat()+","+ legDirectionModel.getStartLocation().getLng());
                             map.addMarker(new MarkerOptions()
-                                    .position(new LatLng(legDirectionModel.getEndLocation().getLat(),legDirectionModel.getEndLocation().getLng()))
+                                    .position(new LatLng(legDirectionModel.getEndLocation().getLat(), legDirectionModel.getEndLocation().getLng()))
                                     .title("End Location"));
-
-                           adapter.setDirectionStepModels(legDirectionModel.getSteps());
+                            Log.d(">>>>>end",legDirectionModel.getEndLocation().getLat()+","+ legDirectionModel.getEndLocation().getLng());
+                            adapter.setDirectionStepModels(legDirectionModel.getSteps());
                             List<LatLng> step = new ArrayList<>();
 
                             PolylineOptions options = new PolylineOptions()
@@ -195,29 +202,30 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
                                     .visible(true);
 
                             List<PatternItem> patternItems;
-                            if(mode.equals("walking")){
+                            if (mode.equals("walking")) {
                                 patternItems = Arrays.asList(
                                         new Dot(), new Gap(12));
-                            }else{
-                                patternItems= Arrays.asList(
+                                options.jointType(JointType.ROUND);
+                            } else {
+                                patternItems = Arrays.asList(
                                         new Dash(30));
                             }
-
                             options.pattern(patternItems);
 
-                            for(StepDirectionModel stepDirectionModel: legDirectionModel.getSteps()){
-                                List<com.google.maps.model.LatLng> decodedLatLng = decode(stepDirectionModel.getPolyline().getPoints());
 
-                                for(com.google.maps.model.LatLng latLng: decodedLatLng){
-                                    step.add(new LatLng(latLng.lat,latLng.lng));
+                            for (StepDirectionModel stepDirectionModel : legDirectionModel.getSteps()) {
+                                List<com.google.maps.model.LatLng> decodedLatLng = decode(stepDirectionModel.getPolyline().getPoints());
+                                for (com.google.maps.model.LatLng latLng : decodedLatLng) {
+                                    step.add(new LatLng(latLng.lat, latLng.lng));
                                 }
                             }
                             options.addAll(step);
                             Polyline polyline = map.addPolyline(options);
-                            LatLng startloc = new LatLng(legDirectionModel.getStartLocation().getLat(),legDirectionModel.getStartLocation().getLng());
-                            LatLng endloc = new LatLng(legDirectionModel.getEndLocation().getLat(),legDirectionModel.getEndLocation().getLng());
-
-                            map.animateCamera(CameraUpdateFactory.newLatLngBounds(new LatLngBounds(startloc,endloc),20));
+                            LatLng end_loc = new LatLng(legDirectionModel.getEndLocation().getLat(), legDirectionModel.getEndLocation().getLng());
+                            LatLng start_loc = new LatLng(legDirectionModel.getStartLocation().getLat(), legDirectionModel.getStartLocation().getLng());
+                            Log.d(">>>startlocm",start_loc.toString());
+                            Log.d(">>>endlocm",end_loc.toString());
+                           map.animateCamera(CameraUpdateFactory.newLatLngBounds(new LatLngBounds(start_loc,start_loc),17));
 
 
                         }
@@ -231,6 +239,7 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
             }
         });
     }
+
     private void clearUI() {
 
         map.clear();
@@ -268,7 +277,6 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
     }
 
     private void setUpGMaps() {
-        client = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -279,15 +287,17 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
+        map.setMyLocationEnabled(true);
+        map.getUiSettings().setTiltGesturesEnabled(true);
+        map.getUiSettings().setMyLocationButtonEnabled(false);
+        map.getUiSettings().setCompassEnabled(false);
+
+        client = LocationServices.getFusedLocationProviderClient(this);
         client.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
-                if(location!=null){
-                    currLoc=location;
-                    getDirection("driving");
-                }else{
-                    Toast.makeText(DirectionActivity.this, "Location Not Found", Toast.LENGTH_SHORT).show();
-                }
+                currLoc=location;
+                getDirection("driving");
             }
         });
     }

@@ -6,4 +6,5 @@
     </style>
 
     <style name="Theme.Nearby_POI" parent="Base.Theme.Nearby_POI" />
+    <style name="ActionBarTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar"></style>
 </resources>
