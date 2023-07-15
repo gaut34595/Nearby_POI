@@ -5,6 +5,9 @@
     <variable
         name="googleModel"
         type="com.example.nearby_poi.GoogleModel"/>
+    <variable
+        name="listener"
+        type="com.example.nearby_poi.DirectionInterface" />
 
 </data>
     <androidx.cardview.widget.CardView
@@ -29,7 +32,7 @@
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_weight="0.5"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:src="@color/quantum_grey700"/>
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -64,10 +67,10 @@
                     android:textColor="@color/black"/>
 
                 <ImageView
-                    android:id="@+id/direcbtn"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_alignParentEnd="true"
+                    android:onClick="@{()-> listener.onDirectionClick(googleModel)}"
                     android:src="@drawable/baseline_directions_24"
                     app:tint="#388E3C" />
 

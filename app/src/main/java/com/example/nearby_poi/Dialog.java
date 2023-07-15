@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.widget.Toast;
 
+import com.example.nearby_poi.Fragments.HomeFragment;
 import com.example.nearby_poi.databinding.DialogLayoutBinding;
 
 public class Dialog{
@@ -28,4 +31,6 @@ public class Dialog{
     public void stopLoading() {
         alertDialog.dismiss();
     }
+
     }
+    

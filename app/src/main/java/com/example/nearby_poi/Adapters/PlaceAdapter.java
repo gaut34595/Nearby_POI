@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nearby_poi.DirectionInterface;
 import com.example.nearby_poi.GoogleModel;
 import com.example.nearby_poi.R;
 import com.example.nearby_poi.databinding.PlaceHolderItemLayoutBinding;
@@ -16,6 +17,14 @@ import java.util.List;
 public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> {
 
     private List<GoogleModel> googleModelList;
+
+    private DirectionInterface directionInterface;
+
+    public PlaceAdapter(DirectionInterface directionInterface) {
+        this.directionInterface = directionInterface;
+    }
+
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -29,6 +38,7 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
         if(googleModelList!=null){
             GoogleModel googleModel = googleModelList.get(position);
             holder.binding.setGoogleModel(googleModel);
+            holder.binding.setListener(directionInterface);
         }
     }
 

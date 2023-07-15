@@ -24,9 +24,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.nearby_poi.Activities.DirectionActivity;
+import com.example.nearby_poi.Adapters.LayoutAdapter;
 import com.example.nearby_poi.Adapters.PlaceAdapter;
 import com.example.nearby_poi.Constants;
 import com.example.nearby_poi.Dialog;
+import com.example.nearby_poi.DirectionInterface;
 import com.example.nearby_poi.Model.GoogleApiResponseModel;
 import com.example.nearby_poi.GoogleModel;
 import com.example.nearby_poi.NetworkRequest.RetrofitAPI;
@@ -62,7 +64,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeFragment extends Fragment implements OnMapReadyCallback,GoogleMap.OnMarkerClickListener {
+public class HomeFragment extends Fragment implements OnMapReadyCallback,GoogleMap.OnMarkerClickListener, DirectionInterface {
     FragmentHomeBinding binding;
     private GoogleMap map;
     int radius = 1500;
@@ -75,8 +77,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,GoogleM
 
     private PlacesModel selectedPmodel;
 
+    private LayoutAdapter layoutAdapter;
+
     private PlaceAdapter placeAdapter;
     private List<GoogleModel> googleModelList;
+
+    private Location currentl;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -170,9 +176,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,GoogleM
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
+
                 mapFragment.getMapAsync(new OnMapReadyCallback() {
                     @Override
                     public void onMapReady(@NonNull GoogleMap googleMap) {
+                        layoutAdapter = null;
+                        layoutAdapter= new LayoutAdapter(location,requireContext());
                         latLng = new LatLng(location.getLatitude(),location.getLongitude());
                         Log.d(">>>>>>>>",latLng.latitude + "<<<" + latLng.longitude);
                         MarkerOptions markerOptions = new MarkerOptions().position(latLng)
@@ -180,6 +189,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,GoogleM
                                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
                         map.addMarker(markerOptions);
                         map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,17));
+                        map.setInfoWindowAdapter(layoutAdapter);
                     }
                 });
             }
@@ -191,7 +201,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,GoogleM
 
         binding.placesRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false));
         binding.placesRecyclerView.setHasFixedSize(false);
-        placeAdapter = new PlaceAdapter();
+        placeAdapter = new PlaceAdapter(this);
         binding.placesRecyclerView.setAdapter(placeAdapter);
 
         SnapHelper snapHelper = new PagerSnapHelper();
@@ -275,15 +285,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,GoogleM
     }
 
     public void onDirectionClick(GoogleModel googleModel) {
+        Toast.makeText(requireContext(), googleModel.getName(), Toast.LENGTH_SHORT).show();
         String placeId = googleModel.getPlaceId();
         Double lat = googleModel.getGeometry().getLocation().getLat();
         Double lng = googleModel.getGeometry().getLocation().getLng();
-
         Intent i = new Intent(requireContext(), DirectionActivity.class);
         i.putExtra("placeID",placeId);
         i.putExtra("latitude",lat);
         i.putExtra("longitude",lng);
-
         startActivity(i);
     }
 
